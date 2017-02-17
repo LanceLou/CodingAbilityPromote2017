@@ -20,5 +20,9 @@ CodingProjectList
 > 
 > 1. 鼠标或键盘可以选中候选结果到输入框> 2. 兼容IE8+/chrome> 3. 做题时间45分钟
 
+源码地址: [https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/autoCompleteInSearch](https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/autoCompleteInSearch)
+
+
+
 
 
