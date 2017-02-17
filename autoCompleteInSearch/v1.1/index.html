@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>搜索框自动完成功能实现</title>
+	<meta charset="utf-8">
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		div.container{
+			width: 500px;
+			height: 200px;
+			position: absolute;
+			top: 30%;
+			left: 50%;
+			margin-left: -250px;
+		}
+		div.container input{
+			appearance: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+		}
+		div.container input[type="text"]{
+			width: 320px;
+		    height: 32px;
+		    font-size: 1.2rem;
+		    border-radius: 3px;
+		    padding-left: 5px;
+		    outline: 0;
+		    box-sizing: border-box;
+			border: 1px solid #555;
+			vertical-align: middle;
+		}
+		div.container input[type="button"]{
+			border: 0;
+		    outline: 0;
+		    width: 50px;
+		    height: 28px;
+		    vertical-align: middle;
+		    border-radius: 3px;
+			background-color: #EB6060;	
+			color: #fff;
+			cursor: pointer;
+		}
+		div.container .remenderContainer{
+			display: none;
+			background-color: #F3F9FB;
+		    box-sizing: border-box;
+		    padding: 5px 2px 0;
+		    margin-top: 2px;
+		    box-shadow: 1px 2px 3px #ccc;
+		}
+		div.showRemenderList .remenderContainer{
+			display: block;
+		}
+		div.remenderContainer{
+			width: 320px;
+			position: absolute;
+		}
+		ul#remenderList li{
+			list-style: none;
+			padding: 3px 5px;
+			box-sizing: border-box;
+			border-top: 1px solid #bbb;
+		}
+		ul#remenderList li:first-child{
+			border-top: 0;
+		}
+		ul#remenderList li:last-child{
+			border-bottom: 1px solid #bbb;
+		}
+		ul#remenderList li:hover{
+			background-color: #ccc;
+		}
+		ul#remenderList li.selected{
+			background-color: #ccc;
+		}
+		div.remenderContainer div.operate-area{
+			padding: 4px 0;
+		}
+		div.remenderContainer div.operate-area a{
+			text-decoration: none;
+			color: #EB6060;
+			margin: 0 5px;
+		}
+		div.remenderContainer div.operate-area a:last-child{
+			position: absolute;
+    		right: 5px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<input type="text" id="searchIn">
+		<div class="remenderContainer">
+			<ul id="remenderList">
+				<li>aaa</li>
+				<li>bbb</li>
+				<li>333</li>
+				<li>666</li>
+				<li>888</li>
+			</ul>
+			<div class="operate-area">
+				<a href="javascript: void(0)">设置</a>
+				<a href="javascript: void(0)">清空</a>
+				<a href="javascript: void(0)" data-operate="close">×</a>
+			</div>
+		</div>
+		<input type="button" value="搜索">
+	</div>
+	<script type="text/javascript" src="./index.js"></script>
+</body>
+</html>
