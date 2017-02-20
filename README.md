@@ -22,6 +22,17 @@ CodingProjectList
 
 源码地址: [https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/autoCompleteInSearch](https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/autoCompleteInSearch)
 
+2. Carousel Model(轮播组件)
+
+> 使用原生JS实现一个轮播组件。
+> 
+> 要求:
+> 
+> 1. 鼠标进入，停止轮播
+> 2. 自动轮播加上下按钮
+> 3. 响应式
+> 4. 兼容IE8+/Chrome
+>
 
 
 
