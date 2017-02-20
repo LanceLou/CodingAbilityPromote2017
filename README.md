@@ -34,6 +34,6 @@ CodingProjectList
 > 4. 兼容IE8+/Chrome
 >
 
-
+源码地址: [https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/lanceCarousel](https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/lanceCarousel)
 
 
