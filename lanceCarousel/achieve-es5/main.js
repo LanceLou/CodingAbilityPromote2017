@@ -23,4 +23,3 @@ function main() {
 	console.log(carousel);
 }
 main();
-
