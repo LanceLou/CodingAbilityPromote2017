@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CAP2017-Magnifier实战</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		canvas#showedImg{
+		    position: absolute;
+		    left: 50%;
+		    margin-left: -500px;
+		    top: 100px;
+		}
+		canvas#srcImg{
+			display: none;
+		}
+	</style>
+	<script type="text/javascript" src="canvas.js"></script>
+	<script type="text/javascript" src="polyfills.js"></script>
+</head>
+<body>
+	<canvas id="showedImg"></canvas>
+	<canvas id="srcImg"></canvas>
+	<script type="text/javascript">
+		/*
+			逻辑，两个canvas容器，一个显示(放置受限的显示图)，一个不显示(放置原图) --> 当鼠标移动进入显示容器(条件一)且点击左键(条件二)时，获取相对位置，通过
+			上下文ctx.drawImage方法进行绘制，注意ctx.drawImage的参数使用
+
+			两种情况需要处理: mousedown了，查看是否在里面(显示放大镜)  mouseup了，查看是否在里面(清除放大镜)
+							预留备处理情况: mouseleave了，查看是否鼠标还在mousedown， 处理
+							不处理情况: mouseEnter了，鼠标处于mousedown状态
+
+			移植性改造:
+				1. 更具输入图片Image对象按比例设置Canvas的长宽，图片对象的显示长宽(与实际长宽区分)，保存比例。
+
+
+		 */
+		var img = new Image(),
+			isEnter = false,
+			isMagnifierShow = false,
+			showCtx = null,
+			scale = 1.6, //定义缩放比为1.6
+			showCanvasRect = null,
+			hiddenCanvas = null;
+
+		function mouseEnterHandler(event) {
+			isEnter = true;
+		}
+
+		function mouseLeaveHandler(event) { //关闭方法
+			isEnter = false;
+			if (isMagnifierShow) {
+				isMagnifierShow = false;
+				updateShowedCanvas();
+			}
+		}
+
+		function mouseDownHandler(event) { //触发放大
+			if (isMagnifierShow) return;
+			isMagnifierShow = true;
+			updateShowedCanvas({x: event.clientX, y: event.clientY});
+		}
+		function mouseUpHandler(event) {  //关闭放大
+			if (isMagnifierShow) isMagnifierShow = false;
+			updateShowedCanvas();
+		}
+		function mouseMoveHandler(event) {
+			if (!isMagnifierShow) return;
+			updateShowedCanvas({x: event.clientX, y: event.clientY});
+		}
+		function getCanvasPos(pos) {
+			var result = {};
+			result.canvasPos = {};
+			result.canvasPos.x = pos.x - showCanvasRect.left;
+			result.canvasPos.y = pos.y - showCanvasRect.top;
+
+			result.srcPos = {};
+			result.srcPos.x = result.canvasPos.x * scale;
+			result.srcPos.y = result.canvasPos.y * scale;
+
+			return result;
+		}
+		function updateShowedCanvas(pos) {
+			showCtx.drawImage(img, 0, 0, showCanvasRect.width, showCanvasRect.height);
+
+			if (isMagnifierShow) {
+				drawMagnify(pos);
+			}
+		}
+		function drawMagnify(pos) {
+			var ColPos = getCanvasPos(pos),
+				r = 120;
+
+			/*此处使用clip方法(每次绘制是都会使用)，剪切画布路径，由于每次绘制是使用同一个上下文，
+			故需要注意，绘制之前应该保存上下文，绘制之后应该弹出之前保存的上下文*/
+			showCtx.save(); //压栈上下文
+			showCtx.lineWidth = 6;
+			showCtx.strokeStyle = "#EB6060";
+			showCtx.beginPath();
+			showCtx.arc(ColPos.canvasPos.x, ColPos.canvasPos.y, r, 0, 2 * Math.PI);
+			showCtx.stroke();
+			showCtx.clip();
+			showCtx.drawImage(img, ColPos.srcPos.x - r, ColPos.srcPos.y - r, 2 * r, 2 * r, ColPos.canvasPos.x - r, ColPos.canvasPos.y - r, 2 * r, 2 * r);
+			showCtx.restore(); //弹出上下文
+		}
+		function initEventLis(showCanvas) {
+			showCanvas.addEventListener("mouseenter", mouseEnterHandler);
+			showCanvas.addEventListener("mouseleave", mouseLeaveHandler);
+			showCanvas.addEventListener("mousedown", mouseDownHandler);
+			showCanvas.addEventListener("mouseup", mouseUpHandler);
+			showCanvas.addEventListener("mousemove", mouseMoveHandler);
+		}
+		function init() {
+			var showCanvas = document.querySelector("#showedImg"),
+				showCanvasCtx = showCanvas.getContext('2d'),
+				localHiddenCanvas = document.querySelector("#srcImg"),
+				srcWidth = 0,
+				srcHeight = 0,
+				showScaledWidth = 0,
+				showScaledHeight = 0;
+
+			img.src = "./test-2.jpg";
+
+			showCtx = showCanvasCtx;
+			hiddenCanvas = localHiddenCanvas;
+
+			img.onload = function () {
+				//获取原图片的原长度和宽度
+				srcWidth = img.width;
+				srcHeight = img.height;
+
+				showScaledWidth = srcWidth / scale;
+				showScaledHeight = srcHeight / scale;
+
+				showCanvas.style.width = showScaledWidth + "px";
+				showCanvas.style.height = showScaledHeight + "px";
+				showCanvas.width = showScaledWidth;
+				showCanvas.height = showScaledHeight;
+
+				showCanvasRect = showCanvas.getBoundingClientRect();
+				if (!showCanvasRect.width) {  //fix ie
+					showCanvasRect.width = showCanvasRect.rigth - showCanvasRect.left;
+					showCanvasRect.height = showCanvasRect.bottom - showCanvasRect.top;
+				}
+
+
+				//使用ctx的 drawIamge时一定要记住设置绘制宽度和高度，如果希望图片进行缩放对的话(前提)
+				showCanvasCtx.drawImage(img, 0, 0, showScaledWidth, showScaledHeight);
+
+				localHiddenCanvas.width = srcWidth;
+				localHiddenCanvas.height = srcHeight;
+
+				localHiddenCanvas.getContext('2d').drawImage(img, 0, 0, srcWidth, srcWidth);
+				initEventLis(showCanvas);	
+			}
+		}
+		window.addEventListener("load", init);
+	</script>
+</body>
+</html>

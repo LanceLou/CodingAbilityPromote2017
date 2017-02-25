@@ -1,0 +1,45 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+section.container{
+	width: 804px;
+	height: 502px;
+	border: 1px dashed #ccc;
+	margin: 10px auto;
+	font-size: 0;
+}
+section.container > div{
+	width: 50%;
+	height: 100%;
+	position: relative;
+	display: inline-block;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+}
+section.container > div.leftShowImgArea{
+	background-image: url(./test-5.png);
+    background-position: center;
+    background-size: contain;
+    overflow: hidden;
+}
+section.container > div.leftShowImgArea .mask{
+	width: 160px;
+	height: 200px;
+	position: absolute;
+	background-color: #000;
+	opacity: 0.5;
+	filter: opacity(50%);
+	display: none;
+}
+section.container > div.rightMagArea{
+    background: none;
+}
+section.magnifierShow > div.leftShowImgArea .mask{
+	display: block;
+}
+section.magnifierShow > div.rightMagArea{
+	background-image: url(./test-5.png);
+    background-size: 250%;
+    background-repeat: no-repeat;
+}

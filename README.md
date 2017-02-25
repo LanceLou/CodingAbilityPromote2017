@@ -12,7 +12,7 @@
 CodingProjectList
 ---
 
-1. 搜索框自动完成功能
+一. 搜索框自动完成功能
 
 > 写代码用原生JS实现一个类似百度搜索框的自动完成控件，比如候选结果集arr=['aaa', 'abc', 'acc', 'dda',...]; 用户输入'a',下拉列表会出现以字母a开头的项'aaa', 'abc', 'acc'。
 > 
@@ -22,7 +22,7 @@ CodingProjectList
 
 源码地址: [https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/autoCompleteInSearch](https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/autoCompleteInSearch)
 
-2. Carousel Model(轮播组件)
+二. Carousel Model(轮播组件)
 
 > 使用原生JS实现一个轮播组件。
 > 
@@ -30,11 +30,33 @@ CodingProjectList
 > 
 > 1. 鼠标进入，停止轮播
 > 2. 自动轮播加上下按钮
-> 3. 响应式
 > 4. 兼容IE8+/Chrome
 >
 
 源码地址: [https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/lanceCarousel](https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/lanceCarousel)
+
+三. Magnifier放大镜实现
+
+> 使用JavaScript或CSS3实现一个放大镜
+> 
+> 要求:
+> 
+> 1. 兼容IE8
+> 2. 交互效果优美
+
+四. LazyMan
+
+> 实现一个LazyMan，可以按照以下方式调用
+> 
+> LazyMan("Hank")，可以按照以下方式输出: Hi! This is Hank!
+> 
+> LazyMan("Hank").sleep(10).eat("dinner")输出: Hi! This is Hank!，等待10s，Wake up after 10; Eat dinner!
+> 
+> LazyMan("Hank").sleep(10).eat("dinner")输出: Hi! This is Hank! Eat dinner~ Eat supper~
+>
+> LazyMan("Hank").sleepFirst(5).eat("supper")输出: Wake up after 5， Hi This is Hank! Eat supper
+> 
+> 以此类推
 
 预备: backToTop
 

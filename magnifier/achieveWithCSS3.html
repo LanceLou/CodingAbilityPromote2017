@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>放大镜CSS3实现</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="achieveWithCSS3.css">
+	<script type="text/javascript" src="polyfills.js"></script>
+</head>
+<body>
+	<!-- 查询IE8常见的不支持的JavaScript，css技术或方法函数 -->
+	<section class="container magnifierShow">
+		<div class="leftShowImgArea">
+			<div class="mask"></div>
+		</div>
+		<div class="rightMagArea"></div>
+	</section>
+
+	<script type="text/javascript">
+		/*
+			基本流程: 鼠标进入，mask块跟随鼠标移动，mask块的内容将会被放大到右边的方块中， 鼠标移除，mask块消失，结束放大
+
+			建议图片宽高比为 4(width):5(height)
+
+			基本逻辑，左边为缩小图，按比例缩小，mask在左边缩小图的基础上再按比例缩小， 右边为原图
+			mask与左边图的比例会构成一个scale， 这个scale就是右边原图的显示大小	
+			显示放大时，随着左边mask的移动，右边只需调整图片的position即可
+			两边均使用背景图片
+		 */
+		var container = document.querySelector("section.container"),
+			magnifyAreaDom = container.querySelector(".rightMagArea"),
+			maskDom = container.querySelector(".mask"),
+			scale = 2.5,
+			isEnter = false,
+			leftAreaRect = null;
+
+		function getInnerPos(pos) {
+			var result = {},
+				maskHalfWidth = leftAreaRect.width / 2.5 / 2,
+				maskHalfHeight = leftAreaRect.height / 2.5 / 2;
+
+			result.leftPos = {};
+			result.leftPos.x = pos.x - leftAreaRect.left - maskHalfWidth;
+			result.leftPos.y = pos.y - leftAreaRect.top - maskHalfHeight;
+
+			result.rightPos = {};
+			result.rightPos.x = - (result.leftPos.x * 2.5);
+			result.rightPos.y = - (result.leftPos.y * 2.5);
+
+			return result;
+		}
+		function endMagnify() {
+			container.className = "container";
+		}
+
+		function renderMagnify(pos){
+			magnifyAreaDom.style.backgroundPosition = pos.x + "px " + pos.y + "px";
+		}
+
+		function render(pos) {
+			if (!isEnter) return;
+			container.className = "container magnifierShow";
+			var innerPos = getInnerPos(pos);
+
+			maskDom.style.left = innerPos.leftPos.x + "px";
+			maskDom.style.top = innerPos.leftPos.y + "px";
+
+			renderMagnify(innerPos.rightPos);
+		}
+		function mouseEnterHandler(event) {
+			isEnter = true;
+		}
+		function mouseLeaveHandler(event) {
+			isEnter = false;
+			endMagnify();
+		}
+		function mouseMoveHandler(event) {	
+			render({x: event.clientX, y: event.clientY});
+		}
+		function initEventListener(leftAreaDom) {
+			leftAreaDom.addEventListener("mouseenter", mouseEnterHandler);
+			leftAreaDom.addEventListener("mousemove", mouseMoveHandler);
+			leftAreaDom.addEventListener("mouseleave", mouseLeaveHandler);
+		}
+		function init() {
+			var leftAreaDom = container.querySelector(".leftShowImgArea");
+			leftAreaRect = leftAreaDom.getBoundingClientRect();
+			initEventListener(leftAreaDom);
+		}
+		init();
+	</script>
+</body>
+</html>
