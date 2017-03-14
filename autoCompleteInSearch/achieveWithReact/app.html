@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>React jsx实现自动完成搜索框</title>
+	<meta charset="utf-8">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		section.container{
+			width: 500px;
+			height: 200px;
+			position: absolute;
+			top: 30%;
+			left: 50%;
+			margin-left: -250px;
+		}
+		section.container input{
+			appearance: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+		}
+		section.container input[type="text"]{
+			width: 320px;
+		    height: 32px;
+		    font-size: 1.2rem;
+		    border-radius: 3px;
+		    padding-left: 5px;
+		    outline: 0;
+		    box-sizing: border-box;
+			border: 1px solid #555;
+			vertical-align: middle;
+		}
+		section.container input[type="button"]{
+			border: 0;
+		    outline: 0;
+		    height: 28px;
+		    margin-left: 1rem;
+		    padding: 0 3px;
+		    vertical-align: middle;
+		    border-radius: 3px;
+		    background-color: #21C5FE;
+		    color: #fff;
+		    cursor: pointer;
+		}
+		section.container .remenderContainer{
+			background-color: #F3F9FB;
+		    box-sizing: border-box;
+		    margin-top: 2px;
+		}
+		div.showRemenderList .remenderContainer{
+			display: block;
+		}
+		div.remenderContainer{
+			width: 320px;
+			position: absolute;
+		}
+		ul.remenderList li{
+			list-style: none;
+			padding: 3px 5px;
+			box-sizing: border-box;
+			border-top: 1px solid #bbb;
+		}
+		ul.remenderList li:first-child{
+			border-top: 0;
+		}
+		ul.remenderList li:last-child{
+			border-bottom: 1px solid #bbb;
+		}
+		ul.remenderList li:hover{
+			background-color: #ccc;
+		}
+		ul.remenderList li.selected{
+			background-color: #ccc;
+		}
+		div.remenderContainer div.operate-area{
+			padding: 4px 0;
+		}
+		div.remenderContainer div.operate-area a{
+			text-decoration: none;
+			color: #EB6060;
+			margin: 0 5px;
+		}
+		div.remenderContainer div.operate-area a:last-child{
+			position: absolute;
+    		right: 5px;
+		}
+	</style>
+</head>
+<body>
+	<div id="mainI"></div>
+
+<script type="text/babel">
+	var searchRemender = {
+		remenderList: ["aaa", "popapp", "bbb", "aailalal", "bbbsbsbsb", "啦啦啦", "沙卡拉卡"]
+	}
+
+	var App = React.createClass({
+		getInitialState: function () {
+			return {
+				matchedResultList: [],
+				searchKey: "",
+				isClose: false
+			}
+		},
+
+		getTheRemenderByKey: function (key) {
+			if(key.trim() === "") return [];
+			let result = [];
+			searchRemender.remenderList.map(function (item) {
+				if (item.indexOf(key) === 0 && item.length > key.length) result.push(item);
+			});
+			console.log(result);
+			return result;
+		},
+
+		clearRemenderHandler: function () {
+			return function () {
+				let matchedResultList = {matchedResultList: []};
+				searchRemender.remenderList = [];
+				this.setState(matchedResultList);
+			}.bind(this);
+		},
+
+		closeRemenderHandler: function () {
+			return function () {
+				this.setState({matchedResultList: [], isClose: true});
+			}.bind(this);
+		},
+
+		searchHandler: function () {
+			let inV = this.refs.searchIn;
+			if (inV.value.trim() === "") {
+				console.log("empty input");
+				return false;
+			}
+			searchRemender.remenderList.push(inV.value);
+			return false;
+		},
+
+		searchInChangeHandler: function () {
+			let inV = this.refs.searchIn.value;
+			this.setState({matchedResultList: this.getTheRemenderByKey(inV), searchKey: inV});
+		},
+
+		selectRemenderHandler: function () {
+			return function(index, event){
+				this.setState({searchKey: event.target.innerHTML, matchedResultList: []});
+			}.bind(this);
+		},
+
+		render: function () {
+			var matchedResultList = this.state.matchedResultList,
+				footer = matchedResultList.length ? <Footer clear={this.clearRemenderHandler()}
+						close={this.closeRemenderHandler()} /> : "";
+			return <section className="container">
+				<input type="text" ref="searchIn" onChange={this.searchInChangeHandler} value={this.state.searchKey} />
+				<input type="button" value="搜索&添加智能提示" onClick={this.searchHandler} />
+				<div className="remenderContainer">
+					<RemenderList matchedResultList={matchedResultList} selectRemender={this.selectRemenderHandler()} />
+
+					{footer}
+				</div>
+			</section>
+		}
+
+	});
+
+
+	//提示list
+	var RemenderList = React.createClass({
+		render: function () {
+			let that = this;
+			
+			//bug
+			
+			return <ul className="remenderList">
+					{
+						this.props.matchedResultList.map(function (item, i) {
+							return <li onClick={that.props.selectRemender.bind(null, i)} key={i}>{item}</li>
+						})
+					}
+			</ul>
+		}
+
+	});
+
+
+	//底部操作区
+	var Footer = React.createClass({
+		render: function () {
+			return <div className="operate-area">
+					<a href="javascript: void(0)">设置</a>
+					<a href="javascript: void(0)" onClick={this.props.clear}>清空</a>
+					<a href="javascript: void(0)" onClick={this.props.close}>×</a>
+			</div>
+		}
+	});
+
+	ReactDOM.render(
+	  <App />,
+	  document.getElementById("mainI")
+	);
+</script>
+</body>
+</html>

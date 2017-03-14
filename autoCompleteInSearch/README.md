@@ -6,6 +6,11 @@
 > 
 > 1. 鼠标或键盘可以选中候选结果到输入框> 2. 兼容IE8+/chrome> 3. 做题时间45分钟
 
+##源码
+
+* V1.0 [View](./v1.0)
+* V1.1 [View](./v1.1)
+* React实现 [View](./achieveWithReact)
 
 ##Demo地址
 
