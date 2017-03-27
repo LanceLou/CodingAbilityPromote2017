@@ -49,6 +49,7 @@ BackToTop.prototype = (function () {
 		var self = this,
 			halfWinHeight = getViewportSize().h / 2;
 		window.addEventListener("scroll", function(event){ //计划部署函数防抖/节流
+			//滑动了大于半个窗体就显示backToTop空间
 			if (window.pageYOffset > halfWinHeight) _showBackTop.call(self);
 			else _hiddenBackTop.call(self);
 		});
