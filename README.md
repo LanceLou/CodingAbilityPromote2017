@@ -44,7 +44,33 @@ CodingProjectList
 > 1. 兼容IE8
 > 2. 交互效果优美
 
-四. LazyMan
+源码地址: [https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/magnifier](https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/magnifier)
+
+四. backToTop组件
+
+> 实现一个backToTop组件，点击按钮，回调顶端
+> 
+> 要求:
+> 
+> 1. 兼容IE8+
+> 2. 交互优
+> 
+
+五. 实现一个类似segmentfault文章目录滚动显示组件
+
+>
+>实现如图
+>
+![demo](https://www.tuchuang001.com/images/2017/03/22/article-list.png)
+>
+>要求
+>
+> 1. 位置在页面右边固定
+> 2. 文章移动的时候目录列表跟随变化到对应的item
+> 3. 点击目录列表时候文章内容跟随移动
+>
+
+六. LazyMan
 
 > 实现一个LazyMan，可以按照以下方式调用
 > 
@@ -58,5 +84,8 @@ CodingProjectList
 > 
 > 以此类推
 
-预备: backToTop
+
+
+
+预备: backToTop，随机洗牌程序。
 
