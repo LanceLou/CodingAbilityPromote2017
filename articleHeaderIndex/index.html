@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>文章目录</title>
+	<meta charset="utf-8">
+	<style>
+
+		section.main{
+			margin-right: 320px;
+			padding-left: 100px;
+		}
+
+		#at-catalogue{
+			width: 290px;
+			position: fixed;
+			right: 0;
+			top: 0;
+			box-sizing: border-box;
+			margin-right: 20px;
+		}
+		div.mark-block {
+			height: 1.7rem;
+	    width: 100%;
+	    top: 54px;
+			opacity: 0.5;
+			filter: opacity(50%);
+			position: absolute;
+			z-index: 99;
+	    box-sizing: border-box;
+	    border-left: 3px solid #10e898;
+	    background-color: #2D2D2D;
+	    transition: top ease-in-out 0.1s;
+		}
+		#at-catalogue > ul{
+			border-left: 3px solid #555;
+		}
+
+		#at-catalogue ul{
+			list-style: disc;
+			padding-left: 2rem;
+		}
+		
+		#at-catalogue ul a{
+			text-decoration: none;
+			color: #009A61;
+	    line-height: 1.7rem;
+	    overflow: hidden;
+	    white-space: nowrap;
+	    text-overflow: ellipsis;
+
+		}
+		#at-catalogue ul a:hover{
+			text-decoration: underline;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<section class="main">
+		<h1>文章标题并没有包含在导航内</h1>
+
+		<h2 class="at-le-1">区块标题-1</h2>
+		<div>
+			<p>在详细介绍 Flux 之前，我们先来看看传统的前端 MVC 架构以及其带来的问题。</p>
+			<p>MVC 的实现可能有很多种方式，比较灵活，但基本本质不会改变，只是三者间的数据传递方向可能会改变，即便是 MVP 模式也只是 MVC 的变种，所以为了统一我们且以下图的 MVC 方式来讨论</p>
+
+			<h3 class="at-le-2">区块标题-1 - 小标题-1</h3>
+			<ul>
+				<li>Model： 负责保存应用数据，和后端交互同步应用数据</li>
+				<li>View： 负责渲染页面 HTML DOM</li>
+				<li>Controller： 负责连接 View 和 Model ， Model 的任何改变会应用到 View 中，View 的操作会通过 Controller 应用到 Model 中</li>
+				<li>关系：Model, View, Controller 都是多对多关系。</li>
+				<img src="https://segmentfault.com/img/bVwB0R" alt="img">
+			</ul>
+
+			<h3 class="at-le-2">区块标题-1 - 小标题-2</h3>
+			<p>对于新增一个 todo ，需要编写一个视图渲染处理函数，函数内添加新项目到列表中。同理对于删除一个 todo，也会有一个处理函数。当业务逻辑变多过后，可能有很多模型需要做增删改的功能，与之对应的就是我们需要精心构建这么多的渲染处理函数。 这种局部更新模式是高性能的关键所在，但问题是：</p>
+			<img src="https://segmentfault.com/img/bVwB3B" alt="img">
+		</div>
+
+		<h2 class="at-le-1">区块标题-2</h2>
+		<div>Action 可以理解为对应用数据修改的指令，任何修改应用数据的行为都必须需通过触发 action 来修改。Action 可以来自于 View，也可以来自服务端的数据更新。</div>
+
+		<h2 class="at-le-1">区块标题-3</h2>
+		<div>
+			<p>需要区别出一种叫控制器 View（Controller View）的类型，这种 View 可以知晓 store 数据，把 store 数据转化为自身的状态，在将数据传递给其他 view 。 并且可以监听 store 数据的改变，当 store 数据改变过后重新设置状态触发重渲染。 可以将控制器 View 对应 MVC 中的控制器，但是差别很大，控制器 View 唯一多做的事情就是监听 store 数据改变，没有其他任何业务处理逻辑。
+			</p>
+			<h3 class="at-le-2">分而治之（Divide And Conquer）</h3>
+			<p>数据的处理过程是 Store -> Controller View -> View。 所有数据来自于 Store，页面的渲染层级为 Store 将数据传入 Controller View, 再由 Controller View 传入子 View , 一直到 View 的叶子节点。</p>
+			<h3 class="at-le-2">合而治之 - 中心化控制</h3>
+			<p>Flux 把所有的 View 都视作愚民，Store 视作资源的拥有者为统治者，统治者需要提供资源（数据）给平民，但是如果平民企图对资源修改（Mutation），必须得先通知给统治者，让统治者决定是否做处理。</p>
+			<p>合而治之的策略也等于中心化控制策略， 作为统治者既要懂得放权利（资源的分配），也要懂得控制权利（资源的修改），这种收缩自如的合理性是 Flux 简洁的根本。</p>
+		</div>
+	</section>
+	<footer style="text-align: center; border-top: 1px solid #555; margin-top: 30px; list-style: none;">
+		<p>底部内容区，测试用, 下面将使用br标签代替</p>
+		<br/>
+		<br/>
+		<br/>
+		<p>除特别说明外，用户内容均采用 知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议 进行许可</p>
+		<p>本站由 又拍云 提供 CDN 存储服务</p>
+		<br/>
+		<br/>
+		<br/>
+		<li>Copyright © 2011-2017 SegmentFault. 当前呈现版本 17.02.05</li>
+		<li>浙ICP备 15005796号-2   浙公网安备 33010602002000号</li>
+		<p>触底啦</p>
+	</footer>
+	<div id="at-catalogue">
+		<p>文章总标题</p>
+		<div class="mark-block"></div>
+		<ul></ul>
+	</div>
+	<script type="text/javascript" src='./index.js'></script>
+</body>
+</html>
