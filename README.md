@@ -73,6 +73,8 @@ CodingProjectList
 > 3. 点击目录列表时候文章内容跟随移动
 >
 
+源码地址: [https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/articleHeaderIndex](https://github.com/LanceLou/CodingAbilityPromote2017/tree/master/articleHeaderIndex)
+
 六. LazyMan
 
 > 实现一个LazyMan，可以按照以下方式调用
@@ -91,4 +93,5 @@ CodingProjectList
 
 
 预备: backToTop，随机洗牌程序。
+
 
